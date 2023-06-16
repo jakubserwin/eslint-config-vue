@@ -10,6 +10,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:vue/vue3-recommended',
     'plugin:vuejs-accessibility/recommended',
+    '@vue/typescript/recommended',
   ],
   plugins: ['import', '@typescript-eslint', 'prettier'],
   rules: {
