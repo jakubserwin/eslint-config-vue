@@ -9,6 +9,7 @@ module.exports = {
     'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended',
     'plugin:vue/vue3-recommended',
+    'plugin:vuejs-accessibility/recommended',
   ],
   plugins: ['import', '@typescript-eslint', 'prettier'],
   rules: {
@@ -18,6 +19,7 @@ module.exports = {
 
     // Vue
     'vue/html-self-closing': 'off',
+    'vue/singleline-html-element-content-newline': 'off',
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
     'vue/custom-event-name-casing': ['error', 'kebab-case'],
     'vue/v-bind-style': ['error', 'shorthand'],
@@ -27,6 +29,7 @@ module.exports = {
         order: ['script', 'template', 'style'],
       },
     ],
+    'vuejs-accessibility/form-control-has-label': 'off',
 
     // TypeScript
     '@typescript-eslint/member-ordering': [
@@ -120,4 +123,12 @@ module.exports = {
       },
     ],
   },
+  overrides: [
+    {
+      files: ['**/pages/**/*.vue'],
+      rules: {
+        'vue/multi-word-component-names': 'off',
+      },
+    },
+  ],
 }
