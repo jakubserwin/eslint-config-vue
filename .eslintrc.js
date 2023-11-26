@@ -124,6 +124,17 @@ module.exports = {
         trailingComma: 'all',
       },
     ],
+
+    // Off
+    'tailwindcss/no-custom-classname': [
+      'off',
+      {
+        ignore: ['i*'],
+      },
+    ],
+    'vue/html-indent': 'off',
+    'vuejs-accessibility/label-has-for': 'off',
+    'vue/max-attributes-per-line': 'off',
   },
   overrides: [
     {
