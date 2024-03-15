@@ -59,6 +59,7 @@ __export(src_exports, {
   antfu: () => antfu,
   comments: () => comments,
   default: () => src_default,
+  formatters: () => formatters,
   getOverrides: () => getOverrides,
   ignores: () => ignores,
   imports: () => imports,
@@ -478,6 +479,26 @@ async function perfectionist() {
 // src/utils.ts
 var import_node_process = __toESM(require("process"), 1);
 var import_local_pkg = require("local-pkg");
+var parserPlain = {
+  meta: {
+    name: "parser-plain"
+  },
+  parseForESLint: (code) => ({
+    ast: {
+      body: [],
+      comments: [],
+      loc: { end: code.length, start: 0 },
+      range: [0, code.length],
+      tokens: [],
+      type: "Program"
+    },
+    scopeManager: null,
+    services: { isPlain: true },
+    visitorKeys: {
+      Program: []
+    }
+  })
+};
 async function combine(...configs) {
   const resolved = await Promise.all(configs);
   return resolved.flat();
@@ -566,6 +587,126 @@ async function jsonc(options = {}) {
       }
     }
   ];
+}
+
+// src/configs/formatters.ts
+async function formatters(options = {}) {
+  if (options === true) {
+    options = {
+      css: true,
+      graphql: true,
+      html: true
+    };
+  }
+  const prettierOptions = Object.assign(
+    {
+      endOfLine: "auto",
+      semi: false,
+      singleQuote: true,
+      tabWidth: 2,
+      trailingComma: "all",
+      useTabs: true
+    },
+    options.prettierOptions || {}
+  );
+  const pluginFormat = await interopDefault(import("eslint-plugin-format"));
+  const configs = [
+    {
+      name: "antfu:formatters:setup",
+      plugins: {
+        format: pluginFormat
+      }
+    }
+  ];
+  if (options.css) {
+    configs.push(
+      {
+        files: [GLOB_CSS, GLOB_POSTCSS],
+        languageOptions: {
+          parser: parserPlain
+        },
+        name: "antfu:formatter:css",
+        rules: {
+          "format/prettier": [
+            "error",
+            {
+              ...prettierOptions,
+              parser: "css"
+            }
+          ]
+        }
+      },
+      {
+        files: [GLOB_SCSS],
+        languageOptions: {
+          parser: parserPlain
+        },
+        name: "antfu:formatter:scss",
+        rules: {
+          "format/prettier": [
+            "error",
+            {
+              ...prettierOptions,
+              parser: "scss"
+            }
+          ]
+        }
+      },
+      {
+        files: [GLOB_LESS],
+        languageOptions: {
+          parser: parserPlain
+        },
+        name: "antfu:formatter:less",
+        rules: {
+          "format/prettier": [
+            "error",
+            {
+              ...prettierOptions,
+              parser: "less"
+            }
+          ]
+        }
+      }
+    );
+  }
+  if (options.html) {
+    configs.push({
+      files: ["**/*.html"],
+      languageOptions: {
+        parser: parserPlain
+      },
+      name: "antfu:formatter:html",
+      rules: {
+        "format/prettier": [
+          "error",
+          {
+            ...prettierOptions,
+            parser: "html"
+          }
+        ]
+      }
+    });
+  }
+  if (options.graphql) {
+    configs.push({
+      files: ["**/*.graphql"],
+      languageOptions: {
+        parser: parserPlain
+      },
+      name: "antfu:formatter:graphql",
+      rules: {
+        "format/prettier": [
+          "error",
+          {
+            ...prettierOptions,
+            parser: "graphql"
+          }
+        ]
+      }
+    });
+  }
+  return configs;
 }
 
 // src/configs/sort.ts
@@ -1317,6 +1458,11 @@ async function antfu(options = {}, ...userConfigs) {
       overrides: getOverrides(options, "yaml")
     }));
   }
+  if (options.formatters) {
+    configs.push(formatters(
+      options.formatters
+    ));
+  }
   const fusedConfig = flatConfigProps.reduce((acc, key) => {
     if (key in options)
       acc[key] = options[key];
@@ -1373,6 +1519,7 @@ var src_default = antfu;
   GLOB_YAML,
   antfu,
   comments,
+  formatters,
   getOverrides,
   ignores,
   imports,

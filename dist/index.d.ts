@@ -347,6 +347,8 @@ declare function perfectionist(): Promise<FlatConfigItem[]>;
 
 declare function jsonc(options?: OptionsFiles & OptionsOverrides): Promise<FlatConfigItem[]>;
 
+declare function formatters(options?: OptionsFormatters | true): Promise<FlatConfigItem[]>;
+
 /**
  * Sort package.json
  *
@@ -397,4 +399,4 @@ declare const GLOB_TESTS: string[];
 declare const GLOB_ALL_SRC: string[];
 declare const GLOB_EXCLUDE: string[];
 
-export { type Awaitable, type FlatConfigItem, GLOB_ALL_SRC, GLOB_ASTRO, GLOB_CSS, GLOB_EXCLUDE, GLOB_HTML, GLOB_JS, GLOB_JSON, GLOB_JSON5, GLOB_JSONC, GLOB_JSX, GLOB_LESS, GLOB_MARKDOWN, GLOB_MARKDOWN_CODE, GLOB_MARKDOWN_IN_MARKDOWN, GLOB_POSTCSS, GLOB_SCSS, GLOB_SRC, GLOB_SRC_EXT, GLOB_STYLE, GLOB_SVELTE, GLOB_TESTS, GLOB_TOML, GLOB_TS, GLOB_TSX, GLOB_VUE, GLOB_YAML, type OptionsComponentExts, type OptionsConfig, type OptionsFiles, type OptionsFormatters, type OptionsHasTypeScript, type OptionsIsInEditor, type OptionsOverrides, type OptionsTypeScriptParserOptions, type OptionsTypeScriptWithTypes, type OptionsTypescript, type OptionsUnoCSS, type OptionsVue, type ResolvedOptions, type Rules, type UserConfigItem, type WrapRuleConfig, antfu, comments, antfu as default, getOverrides, ignores, imports, javascript, jsonc, node, perfectionist, resolveSubOptions, sortPackageJson, sortTsconfig, test, typescript, unicorn, vue, yaml };
+export { type Awaitable, type FlatConfigItem, GLOB_ALL_SRC, GLOB_ASTRO, GLOB_CSS, GLOB_EXCLUDE, GLOB_HTML, GLOB_JS, GLOB_JSON, GLOB_JSON5, GLOB_JSONC, GLOB_JSX, GLOB_LESS, GLOB_MARKDOWN, GLOB_MARKDOWN_CODE, GLOB_MARKDOWN_IN_MARKDOWN, GLOB_POSTCSS, GLOB_SCSS, GLOB_SRC, GLOB_SRC_EXT, GLOB_STYLE, GLOB_SVELTE, GLOB_TESTS, GLOB_TOML, GLOB_TS, GLOB_TSX, GLOB_VUE, GLOB_YAML, type OptionsComponentExts, type OptionsConfig, type OptionsFiles, type OptionsFormatters, type OptionsHasTypeScript, type OptionsIsInEditor, type OptionsOverrides, type OptionsTypeScriptParserOptions, type OptionsTypeScriptWithTypes, type OptionsTypescript, type OptionsUnoCSS, type OptionsVue, type ResolvedOptions, type Rules, type UserConfigItem, type WrapRuleConfig, antfu, comments, antfu as default, formatters, getOverrides, ignores, imports, javascript, jsonc, node, perfectionist, resolveSubOptions, sortPackageJson, sortTsconfig, test, typescript, unicorn, vue, yaml };

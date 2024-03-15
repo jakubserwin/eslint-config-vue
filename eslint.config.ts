@@ -8,7 +8,7 @@ export default antfu(
       'fixtures',
       '_fixtures',
     ],
-    // formatters: true,
+    formatters: true,
   },
   {
     files: ['src/**/*.ts'],
