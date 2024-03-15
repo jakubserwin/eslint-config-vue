@@ -7,11 +7,11 @@ import {
   ignores,
   imports,
   javascript,
-  // jsonc,
+  jsonc,
   node,
   perfectionist,
-  // sortPackageJson,
-  // sortTsconfig,
+  sortPackageJson,
+  sortTsconfig,
   test,
   typescript,
   unicorn,
@@ -122,16 +122,15 @@ export async function antfu(
   // }
 
 
-  // if (options.jsonc ?? true) {
-  //   configs.push(
-  //     jsonc({
-  //       overrides: getOverrides(options, 'jsonc'),
-  //       stylistic: stylisticOptions,
-  //     }),
-  //     sortPackageJson(),
-  //     sortTsconfig(),
-  //   )
-  // }
+  if (options.jsonc ?? true) {
+    configs.push(
+      jsonc({
+        overrides: getOverrides(options, 'jsonc'),
+      }),
+      sortPackageJson(),
+      sortTsconfig(),
+    )
+  }
 
   if (options.yaml ?? true) {
     configs.push(yaml({

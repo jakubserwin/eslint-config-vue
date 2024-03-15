@@ -63,9 +63,12 @@ __export(src_exports, {
   ignores: () => ignores,
   imports: () => imports,
   javascript: () => javascript,
+  jsonc: () => jsonc,
   node: () => node,
   perfectionist: () => perfectionist,
   resolveSubOptions: () => resolveSubOptions,
+  sortPackageJson: () => sortPackageJson,
+  sortTsconfig: () => sortTsconfig,
   test: () => test,
   typescript: () => typescript,
   unicorn: () => unicorn,
@@ -494,6 +497,287 @@ function toArray(value) {
 async function interopDefault(m) {
   const resolved = await m;
   return resolved.default || resolved;
+}
+
+// src/configs/jsonc.ts
+async function jsonc(options = {}) {
+  const {
+    files = [GLOB_JSON, GLOB_JSON5, GLOB_JSONC],
+    overrides = {}
+  } = options;
+  const [
+    pluginJsonc,
+    parserJsonc
+  ] = await Promise.all([
+    interopDefault(import("eslint-plugin-jsonc")),
+    interopDefault(import("jsonc-eslint-parser"))
+  ]);
+  return [
+    {
+      name: "antfu:jsonc:setup",
+      plugins: {
+        jsonc: pluginJsonc
+      }
+    },
+    {
+      files,
+      languageOptions: {
+        parser: parserJsonc
+      },
+      name: "antfu:jsonc:rules",
+      rules: {
+        "jsonc/array-bracket-spacing": ["error", "never"],
+        "jsonc/comma-dangle": ["error", "never"],
+        "jsonc/comma-style": ["error", "last"],
+        "jsonc/indent": ["error", 2],
+        "jsonc/key-spacing": ["error", { afterColon: true, beforeColon: false }],
+        "jsonc/no-bigint-literals": "error",
+        "jsonc/no-binary-expression": "error",
+        "jsonc/no-binary-numeric-literals": "error",
+        "jsonc/no-dupe-keys": "error",
+        "jsonc/no-escape-sequence-in-identifier": "error",
+        "jsonc/no-floating-decimal": "error",
+        "jsonc/no-hexadecimal-numeric-literals": "error",
+        "jsonc/no-infinity": "error",
+        "jsonc/no-multi-str": "error",
+        "jsonc/no-nan": "error",
+        "jsonc/no-number-props": "error",
+        "jsonc/no-numeric-separators": "error",
+        "jsonc/no-octal": "error",
+        "jsonc/no-octal-escape": "error",
+        "jsonc/no-octal-numeric-literals": "error",
+        "jsonc/no-parenthesized": "error",
+        "jsonc/no-plus-sign": "error",
+        "jsonc/no-regexp-literals": "error",
+        "jsonc/no-sparse-arrays": "error",
+        "jsonc/no-template-literals": "error",
+        "jsonc/no-undefined-value": "error",
+        "jsonc/no-unicode-codepoint-escapes": "error",
+        "jsonc/no-useless-escape": "error",
+        "jsonc/object-curly-newline": ["error", { consistent: true, multiline: true }],
+        "jsonc/object-curly-spacing": ["error", "always"],
+        "jsonc/object-property-newline": ["error", { allowMultiplePropertiesPerLine: true }],
+        "jsonc/quote-props": "error",
+        "jsonc/quotes": "error",
+        "jsonc/space-unary-ops": "error",
+        "jsonc/valid-json-number": "error",
+        "jsonc/vue-custom-block/no-parsing-error": "error",
+        ...overrides
+      }
+    }
+  ];
+}
+
+// src/configs/sort.ts
+async function sortPackageJson() {
+  return [
+    {
+      files: ["**/package.json"],
+      name: "antfu:sort-package-json",
+      rules: {
+        "jsonc/sort-array-values": [
+          "error",
+          {
+            order: { type: "asc" },
+            pathPattern: "^files$"
+          }
+        ],
+        "jsonc/sort-keys": [
+          "error",
+          {
+            order: [
+              "publisher",
+              "name",
+              "displayName",
+              "type",
+              "version",
+              "private",
+              "packageManager",
+              "description",
+              "author",
+              "license",
+              "funding",
+              "homepage",
+              "repository",
+              "bugs",
+              "keywords",
+              "categories",
+              "sideEffects",
+              "exports",
+              "main",
+              "module",
+              "unpkg",
+              "jsdelivr",
+              "types",
+              "typesVersions",
+              "bin",
+              "icon",
+              "files",
+              "engines",
+              "activationEvents",
+              "contributes",
+              "scripts",
+              "peerDependencies",
+              "peerDependenciesMeta",
+              "dependencies",
+              "optionalDependencies",
+              "devDependencies",
+              "pnpm",
+              "overrides",
+              "resolutions",
+              "husky",
+              "simple-git-hooks",
+              "lint-staged",
+              "eslintConfig"
+            ],
+            pathPattern: "^$"
+          },
+          {
+            order: { type: "asc" },
+            pathPattern: "^(?:dev|peer|optional|bundled)?[Dd]ependencies(Meta)?$"
+          },
+          {
+            order: { type: "asc" },
+            pathPattern: "^(?:resolutions|overrides|pnpm.overrides)$"
+          },
+          {
+            order: [
+              "types",
+              "import",
+              "require",
+              "default"
+            ],
+            pathPattern: "^exports.*$"
+          }
+        ]
+      }
+    }
+  ];
+}
+function sortTsconfig() {
+  return [
+    {
+      files: ["**/tsconfig.json", "**/tsconfig.*.json"],
+      name: "antfu:sort-tsconfig",
+      rules: {
+        "jsonc/sort-keys": [
+          "error",
+          {
+            order: [
+              "extends",
+              "compilerOptions",
+              "references",
+              "files",
+              "include",
+              "exclude"
+            ],
+            pathPattern: "^$"
+          },
+          {
+            order: [
+              /* Projects */
+              "incremental",
+              "composite",
+              "tsBuildInfoFile",
+              "disableSourceOfProjectReferenceRedirect",
+              "disableSolutionSearching",
+              "disableReferencedProjectLoad",
+              /* Language and Environment */
+              "target",
+              "jsx",
+              "jsxFactory",
+              "jsxFragmentFactory",
+              "jsxImportSource",
+              "lib",
+              "moduleDetection",
+              "noLib",
+              "reactNamespace",
+              "useDefineForClassFields",
+              "emitDecoratorMetadata",
+              "experimentalDecorators",
+              /* Modules */
+              "baseUrl",
+              "rootDir",
+              "rootDirs",
+              "customConditions",
+              "module",
+              "moduleResolution",
+              "moduleSuffixes",
+              "noResolve",
+              "paths",
+              "resolveJsonModule",
+              "resolvePackageJsonExports",
+              "resolvePackageJsonImports",
+              "typeRoots",
+              "types",
+              "allowArbitraryExtensions",
+              "allowImportingTsExtensions",
+              "allowUmdGlobalAccess",
+              /* JavaScript Support */
+              "allowJs",
+              "checkJs",
+              "maxNodeModuleJsDepth",
+              /* Type Checking */
+              "strict",
+              "strictBindCallApply",
+              "strictFunctionTypes",
+              "strictNullChecks",
+              "strictPropertyInitialization",
+              "allowUnreachableCode",
+              "allowUnusedLabels",
+              "alwaysStrict",
+              "exactOptionalPropertyTypes",
+              "noFallthroughCasesInSwitch",
+              "noImplicitAny",
+              "noImplicitOverride",
+              "noImplicitReturns",
+              "noImplicitThis",
+              "noPropertyAccessFromIndexSignature",
+              "noUncheckedIndexedAccess",
+              "noUnusedLocals",
+              "noUnusedParameters",
+              "useUnknownInCatchVariables",
+              /* Emit */
+              "declaration",
+              "declarationDir",
+              "declarationMap",
+              "downlevelIteration",
+              "emitBOM",
+              "emitDeclarationOnly",
+              "importHelpers",
+              "importsNotUsedAsValues",
+              "inlineSourceMap",
+              "inlineSources",
+              "mapRoot",
+              "newLine",
+              "noEmit",
+              "noEmitHelpers",
+              "noEmitOnError",
+              "outDir",
+              "outFile",
+              "preserveConstEnums",
+              "preserveValueImports",
+              "removeComments",
+              "sourceMap",
+              "sourceRoot",
+              "stripInternal",
+              /* Interop Constraints */
+              "allowSyntheticDefaultImports",
+              "esModuleInterop",
+              "forceConsistentCasingInFileNames",
+              "isolatedModules",
+              "preserveSymlinks",
+              "verbatimModuleSyntax",
+              /* Completeness */
+              "skipDefaultLibCheck",
+              "skipLibCheck"
+            ],
+            pathPattern: "^compilerOptions$"
+          }
+        ]
+      }
+    }
+  ];
 }
 
 // src/configs/test.ts
@@ -1019,6 +1303,15 @@ async function antfu(options = {}, ...userConfigs) {
       typescript: !!enableTypeScript
     }));
   }
+  if (options.jsonc ?? true) {
+    configs.push(
+      jsonc({
+        overrides: getOverrides(options, "jsonc")
+      }),
+      sortPackageJson(),
+      sortTsconfig()
+    );
+  }
   if (options.yaml ?? true) {
     configs.push(yaml({
       overrides: getOverrides(options, "yaml")
@@ -1084,9 +1377,12 @@ var src_default = antfu;
   ignores,
   imports,
   javascript,
+  jsonc,
   node,
   perfectionist,
   resolveSubOptions,
+  sortPackageJson,
+  sortTsconfig,
   test,
   typescript,
   unicorn,
