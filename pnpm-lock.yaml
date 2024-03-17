@@ -44,6 +44,9 @@ dependencies:
   eslint-plugin-no-only-tests:
     specifier: ^3.1.0
     version: 3.1.0
+  eslint-plugin-prefer-arrow-functions:
+    specifier: ^3.3.2
+    version: 3.3.2(eslint-ts-patch@8.57.0-0)
   eslint-plugin-tailwindcss:
     specifier: ^3.15.1
     version: 3.15.1(tailwindcss@3.4.1)
@@ -88,12 +91,12 @@ devDependencies:
   '@types/eslint':
     specifier: ^8.56.5
     version: 8.56.5
+  '@types/eslint__eslintrc':
+    specifier: ^2.1.1
+    version: 2.1.1
   '@types/node':
     specifier: ^20.11.27
     version: 20.11.28
-  '@types/prompts':
-    specifier: ^2.4.9
-    version: 2.4.9
   eslint:
     specifier: npm:eslint-ts-patch@^8.57.0-0
     version: /eslint-ts-patch@8.57.0-0
@@ -596,6 +599,12 @@ packages:
       '@types/json-schema': 7.0.15
     dev: true
 
+  /@types/eslint__eslintrc@2.1.1:
+    resolution: {integrity: sha512-LI51vVv3N7WI4+fM7Xkh1+ciLA1gtuQPgXdKdece+vD8f/G2hrFqtwb4YIQyIM6VXpRM4vSy1PW5y3yuHK+Y2w==}
+    dependencies:
+      '@types/eslint': 8.56.5
+    dev: true
+
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
@@ -610,13 +619,6 @@ packages:
   /@types/normalize-package-data@2.4.4:
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
     dev: false
-
-  /@types/prompts@2.4.9:
-    resolution: {integrity: sha512-qTxFi6Buiu8+50/+3DGIWLHM6QuWsEKugJnnP6iv2Mc4ncxE4A/OJkjuVOA+5X0X1S/nq5VJRa8Lu+nwcvbrKA==}
-    dependencies:
-      '@types/node': 20.11.28
-      kleur: 3.0.3
-    dev: true
 
   /@types/semver@7.5.7:
     resolution: {integrity: sha512-/wdoPq1QqkSj9/QOeKkFquEuPzQbHTWAMPH/PaUMB+JuR31lXhlWXRZ52IpfDYVlDOUBvX09uBrPwxGT1hjNBg==}
@@ -1502,6 +1504,14 @@ packages:
     engines: {node: '>=5.0.0'}
     dev: false
 
+  /eslint-plugin-prefer-arrow-functions@3.3.2(eslint-ts-patch@8.57.0-0):
+    resolution: {integrity: sha512-XRGsga9cK6pZ48IA2PM2PABBlWshRYhkofkQxcWzCM0YlDnal2hrQKsuz0FqtBHimJpgEXGgHUko3KrOayxlOQ==}
+    peerDependencies:
+      eslint: '>=5.0.0'
+    dependencies:
+      eslint: /eslint-ts-patch@8.57.0-0
+    dev: false
+
   /eslint-plugin-tailwindcss@3.15.1(tailwindcss@3.4.1):
     resolution: {integrity: sha512-4RXRMIaMG07C2TBEW1k0VM4+dDazz1kxcZhkK4zirvmHGZTA4jnlSO2kq5mamuSPi+Wo17dh2SlC8IyFBuCd7Q==}
     engines: {node: '>=12.13.0'}
@@ -2141,11 +2151,6 @@ packages:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
     dependencies:
       json-buffer: 3.0.1
-
-  /kleur@3.0.3:
-    resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
-    engines: {node: '>=6'}
-    dev: true
 
   /levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}

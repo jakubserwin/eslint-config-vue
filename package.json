@@ -53,6 +53,7 @@
     "eslint-plugin-jsonc": "^2.13.0",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-no-only-tests": "^3.1.0",
+    "eslint-plugin-prefer-arrow-functions": "^3.3.2",
     "eslint-plugin-tailwindcss": "^3.15.1",
     "eslint-plugin-unicorn": "^51.0.1",
     "eslint-plugin-unused-imports": "^3.1.0",
@@ -69,8 +70,8 @@
   "devDependencies": {
     "@antfu/ni": "^0.21.12",
     "@types/eslint": "^8.56.5",
+    "@types/eslint__eslintrc": "^2.1.1",
     "@types/node": "^20.11.27",
-    "@types/prompts": "^2.4.9",
     "eslint": "npm:eslint-ts-patch@^8.57.0-0",
     "eslint-flat-config-viewer": "^0.1.11",
     "eslint-ts-patch": "^8.57.0-0",
