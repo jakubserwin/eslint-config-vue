@@ -7,6 +7,7 @@ import {
   javascript,
   jsonc,
   node,
+  prettier,
   sortPackageJson,
   sortTsconfig,
   test,
@@ -18,10 +19,24 @@ import {
 import type { Awaitable, FlatConfigItem, OptionsConfig, UserConfigItem } from './types'
 import { combine, interopDefault } from './utils'
 
-// TODO
-// - tailiwnd css
-// - prettier
-// - z
+export type ResolvedOptions<T> = T extends boolean ? never : NonNullable<T>
+
+export const resolveSubOptions = <K extends keyof OptionsConfig>(
+  options: OptionsConfig,
+  key: K,
+): ResolvedOptions<OptionsConfig[K]> =>
+  typeof options[key] === 'boolean' ? ({} as any) : options[key] || {}
+
+export const getOverrides = <K extends keyof OptionsConfig>(
+  options: OptionsConfig,
+  key: K,
+) => {
+  const sub = resolveSubOptions(options, key)
+  return {
+    ...(options.overrides as any)?.[key],
+    ...('overrides' in sub ? sub.overrides : {}),
+  }
+}
 
 const flatConfigProps: Array<keyof FlatConfigItem> = [
   'name',
@@ -45,28 +60,35 @@ const flatConfigProps: Array<keyof FlatConfigItem> = [
  * @returns {Promise<UserConfigItem[]>}
  *  The merged ESLint configurations.
  */
-export async function jsConfig(
+export const jsConfig = async (
   options: OptionsConfig & FlatConfigItem = {},
   ...userConfigs: Array<Awaitable<UserConfigItem | UserConfigItem[]>>
-): Promise<UserConfigItem[]> {
-
+): Promise<UserConfigItem[]> => {
   const {
     gitignore: enableGitignore = true,
-    isInEditor = !!((process.env.VSCODE_PID 
-      || process.env.VSCODE_CWD
-      || process.env.JETBRAINS_IDE
-      || process.env.VIM)
-      && !process.env.CI),
+    isInEditor = !!(
+      (process.env.VSCODE_PID ||
+        process.env.VSCODE_CWD ||
+        process.env.JETBRAINS_IDE ||
+        process.env.VIM) &&
+      !process.env.CI
+    ),
   } = options
 
   const configs: Array<Awaitable<FlatConfigItem[]>> = []
 
   if (enableGitignore) {
     if (typeof enableGitignore !== 'boolean') {
-      configs.push(interopDefault(import('eslint-config-flat-gitignore')).then(r => [r(enableGitignore)]))
+      configs.push(
+        interopDefault(import('eslint-config-flat-gitignore')).then((r) => [
+          r(enableGitignore),
+        ]),
+      )
     } else {
       if (fs.existsSync('.gitignore'))
-        configs.push(interopDefault(import('eslint-config-flat-gitignore')).then(r => [r()]))
+        configs.push(
+          interopDefault(import('eslint-config-flat-gitignore')).then((r) => [r()]),
+        )
     }
   }
 
@@ -77,6 +99,7 @@ export async function jsConfig(
       isInEditor,
       overrides: getOverrides(options, 'javascript'),
     }),
+    prettier(),
     comments(),
     node(),
     imports(),
@@ -92,10 +115,12 @@ export async function jsConfig(
   )
 
   if (options.test ?? true) {
-    configs.push(test({
-      isInEditor,
-      overrides: getOverrides(options, 'test'),
-    }))
+    configs.push(
+      test({
+        isInEditor,
+        overrides: getOverrides(options, 'test'),
+      }),
+    )
   }
 
   if (options.jsonc ?? true) {
@@ -109,51 +134,22 @@ export async function jsConfig(
   }
 
   if (options.yaml ?? true) {
-    configs.push(yaml({
-      overrides: getOverrides(options, 'yaml'),
-    }))
+    configs.push(
+      yaml({
+        overrides: getOverrides(options, 'yaml'),
+      }),
+    )
   }
 
   // User can optionally pass a flat config item to the first argument
   // We pick the known keys as ESLint would do schema validation
   const fusedConfig = flatConfigProps.reduce((acc, key) => {
-    if (key in options)
-      acc[key] = options[key] as any
+    if (key in options) acc[key] = options[key] as any
     return acc
   }, {} as FlatConfigItem)
-  if (Object.keys(fusedConfig).length)
-    configs.push([fusedConfig])
+  if (Object.keys(fusedConfig).length) configs.push([fusedConfig])
 
-  const merged = combine(
-    ...configs,
-    ...userConfigs,
-  )
+  const merged = combine(...configs, ...userConfigs)
 
   return merged
-}
-
-export type ResolvedOptions<T> = T extends boolean
-  ? never
-  : NonNullable<T>
-
-export function resolveSubOptions<K extends keyof OptionsConfig>(
-  options: OptionsConfig,
-  key: K,
-): ResolvedOptions<OptionsConfig[K]> {
-  return typeof options[key] === 'boolean'
-    ? {} as any
-    : options[key] || {}
-}
-
-export function getOverrides<K extends keyof OptionsConfig>(
-  options: OptionsConfig,
-  key: K,
-) {
-  const sub = resolveSubOptions(options, key)
-  return {
-    ...(options.overrides as any)?.[key],
-    ...'overrides' in sub
-      ? sub.overrides
-      : {},
-  }
 }

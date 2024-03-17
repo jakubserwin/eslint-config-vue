@@ -2,32 +2,28 @@ import process from 'node:process'
 import { GLOB_SRC, GLOB_TS } from '../globs'
 import { pluginAntfu } from '../plugins'
 import type {
- FlatConfigItem, OptionsComponentExts, OptionsFiles, OptionsOverrides, OptionsTypeScriptParserOptions, OptionsTypeScriptWithTypes 
+  FlatConfigItem,
+  OptionsComponentExts,
+  OptionsFiles,
+  OptionsOverrides,
+  OptionsTypeScriptParserOptions,
+  OptionsTypeScriptWithTypes,
 } from '../types'
 import { interopDefault, renameRules, toArray } from '../utils'
 
-export async function typescript(
+export const typescript = async (
   options: OptionsFiles &
-   OptionsComponentExts &
+    OptionsComponentExts &
     OptionsOverrides &
-    OptionsTypeScriptWithTypes & 
+    OptionsTypeScriptWithTypes &
     OptionsTypeScriptParserOptions = {},
-): Promise<FlatConfigItem[]> {
-  const {
-    componentExts = [],
-    overrides = {},
-    parserOptions = {},
-  } = options
+): Promise<FlatConfigItem[]> => {
+  const { componentExts = [], overrides = {}, parserOptions = {} } = options
 
-  const files = options.files ?? [
-    GLOB_SRC,
-    ...componentExts.map(ext => `**/*.${ext}`),
-  ]
+  const files = options.files ?? [GLOB_SRC, ...componentExts.map((ext) => `**/*.${ext}`)]
 
   const filesTypeAware = options.filesTypeAware ?? [GLOB_TS]
-  const tsconfigPath = options?.tsconfigPath
-    ? toArray(options.tsconfigPath)
-    : undefined
+  const tsconfigPath = options?.tsconfigPath ? toArray(options.tsconfigPath) : undefined
   const isTypeAware = !!tsconfigPath
 
   const typeAwareRules: FlatConfigItem['rules'] = {
@@ -52,35 +48,34 @@ export async function typescript(
     'ts/unbound-method': 'error',
   }
 
-  const [
-    pluginTs,
-    parserTs,
-  ] = await Promise.all([
+  const [pluginTs, parserTs] = await Promise.all([
     interopDefault(import('@typescript-eslint/eslint-plugin')),
     interopDefault(import('@typescript-eslint/parser')),
   ] as const)
 
-  function makeParser(typeAware: boolean, files: string[], ignores?: string[]): FlatConfigItem {
-    return {
-      files,
-      ...ignores ? { ignores } : {},
-      languageOptions: {
-        parser: parserTs,
-        parserOptions: {
-          extraFileExtensions: componentExts.map(ext => `.${ext}`),
-          sourceType: 'module',
-          ...typeAware
-            ? {
-                project: tsconfigPath,
-                tsconfigRootDir: process.cwd(),
-              }
-            : {},
-          ...parserOptions as any,
-        },
+  const makeParser = (
+    typeAware: boolean,
+    files: string[],
+    ignores?: string[],
+  ): FlatConfigItem => ({
+    files,
+    ...(ignores ? { ignores } : {}),
+    languageOptions: {
+      parser: parserTs,
+      parserOptions: {
+        extraFileExtensions: componentExts.map((ext) => `.${ext}`),
+        sourceType: 'module',
+        ...(typeAware
+          ? {
+              project: tsconfigPath,
+              tsconfigRootDir: process.cwd(),
+            }
+          : {}),
+        ...(parserOptions as any),
       },
-      name: `antfu:typescript:${typeAware ? 'type-aware-parser' : 'parser'}`,
-    }
-  }
+    },
+    name: `antfu:typescript:${typeAware ? 'type-aware-parser' : 'parser'}`,
+  })
 
   return [
     {
@@ -92,12 +87,9 @@ export async function typescript(
       },
     },
     // assign type-aware parser for type-aware files and type-unaware parser for the rest
-    ...isTypeAware
-      ? [
-          makeParser(true, filesTypeAware),
-          makeParser(false, files, filesTypeAware),
-        ]
-      : [makeParser(false, files)],
+    ...(isTypeAware
+      ? [makeParser(true, filesTypeAware), makeParser(false, files, filesTypeAware)]
+      : [makeParser(false, files)]),
     {
       files,
       name: 'antfu:typescript:rules',
@@ -107,11 +99,7 @@ export async function typescript(
           '@typescript-eslint/',
           'ts/',
         ),
-        ...renameRules(
-          pluginTs.configs.strict.rules!,
-          '@typescript-eslint/',
-          'ts/',
-        ),
+        ...renameRules(pluginTs.configs.strict.rules!, '@typescript-eslint/', 'ts/'),
         'no-dupe-class-members': 'off',
         'no-loss-of-precision': 'off',
         'no-redeclare': 'off',
@@ -128,7 +116,10 @@ export async function typescript(
         'ts/ban-types': ['error', { types: { Function: false } }],
         'ts/brace-style': ['error', '1tbs'],
         'ts/consistent-type-definitions': ['error', 'type'],
-        'ts/consistent-type-imports': ['error', { disallowTypeAnnotations: false, prefer: 'type-imports' }],
+        'ts/consistent-type-imports': [
+          'error',
+          { disallowTypeAnnotations: false, prefer: 'type-imports' },
+        ],
         'ts/member-delimiter-style': [
           'error',
           {
@@ -161,11 +152,17 @@ export async function typescript(
         'ts/no-non-null-assertion': 'off',
         'ts/no-redeclare': 'error',
         'ts/no-require-imports': 'error',
-        'ts/type-annotation-spacing': ['error', {
-          after: true,
-        }],
+        'ts/type-annotation-spacing': [
+          'error',
+          {
+            after: true,
+          },
+        ],
         'ts/no-unused-vars': 'off',
-        'ts/no-use-before-define': ['error', { classes: false, functions: false, variables: true }],
+        'ts/no-use-before-define': [
+          'error',
+          { classes: false, functions: false, variables: true },
+        ],
         'ts/no-useless-constructor': 'off',
         'ts/prefer-ts-expect-error': 'error',
         'ts/triple-slash-reference': 'off',
@@ -177,7 +174,7 @@ export async function typescript(
       files: filesTypeAware,
       name: 'antfu:typescript:rules-type-aware',
       rules: {
-        ...tsconfigPath ? typeAwareRules : {},
+        ...(tsconfigPath ? typeAwareRules : {}),
         ...overrides,
       },
     },

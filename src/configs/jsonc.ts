@@ -2,18 +2,12 @@ import { GLOB_JSON, GLOB_JSON5, GLOB_JSONC } from '../globs'
 import type { FlatConfigItem, OptionsFiles, OptionsOverrides } from '../types'
 import { interopDefault } from '../utils'
 
-export async function jsonc(
+export const jsonc = async (
   options: OptionsFiles & OptionsOverrides = {},
-): Promise<FlatConfigItem[]> {
-  const {
-    files = [GLOB_JSON, GLOB_JSON5, GLOB_JSONC],
-    overrides = {},
-  } = options
+): Promise<FlatConfigItem[]> => {
+  const { files = [GLOB_JSON, GLOB_JSON5, GLOB_JSONC], overrides = {} } = options
 
-  const [
-    pluginJsonc,
-    parserJsonc,
-  ] = await Promise.all([
+  const [pluginJsonc, parserJsonc] = await Promise.all([
     interopDefault(import('eslint-plugin-jsonc')),
     interopDefault(import('jsonc-eslint-parser')),
   ] as const)
@@ -63,7 +57,10 @@ export async function jsonc(
         'jsonc/no-useless-escape': 'error',
         'jsonc/object-curly-newline': ['error', { consistent: true, multiline: true }],
         'jsonc/object-curly-spacing': ['error', 'always'],
-        'jsonc/object-property-newline': ['error', { allowMultiplePropertiesPerLine: true }],
+        'jsonc/object-property-newline': [
+          'error',
+          { allowMultiplePropertiesPerLine: true },
+        ],
         'jsonc/quote-props': 'error',
         'jsonc/quotes': 'error',
         'jsonc/space-unary-ops': 'error',

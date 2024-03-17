@@ -2,18 +2,12 @@ import { GLOB_YAML } from '../globs'
 import type { FlatConfigItem, OptionsFiles, OptionsOverrides } from '../types'
 import { interopDefault } from '../utils'
 
-export async function yaml(
+export const yaml = async (
   options: OptionsOverrides & OptionsFiles = {},
-): Promise<FlatConfigItem[]> {
-  const {
-    files = [GLOB_YAML],
-    overrides = {},
-  } = options
+): Promise<FlatConfigItem[]> => {
+  const { files = [GLOB_YAML], overrides = {} } = options
 
-  const [
-    pluginYaml,
-    parserYaml,
-  ] = await Promise.all([
+  const [pluginYaml, parserYaml] = await Promise.all([
     interopDefault(import('eslint-plugin-yml')),
     interopDefault(import('yaml-eslint-parser')),
   ] as const)

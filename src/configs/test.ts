@@ -1,20 +1,18 @@
 import { GLOB_TESTS } from '../globs'
-import type { FlatConfigItem, OptionsFiles, OptionsIsInEditor, OptionsOverrides } from '../types'
+import type {
+  FlatConfigItem,
+  OptionsFiles,
+  OptionsIsInEditor,
+  OptionsOverrides,
+} from '../types'
 import { interopDefault } from '../utils'
 
-export async function test(
+export const test = async (
   options: OptionsFiles & OptionsIsInEditor & OptionsOverrides = {},
-): Promise<FlatConfigItem[]> {
-  const {
-    files = GLOB_TESTS,
-    isInEditor = false,
-    overrides = {},
-  } = options
+): Promise<FlatConfigItem[]> => {
+  const { files = GLOB_TESTS, isInEditor = false, overrides = {} } = options
 
-  const [
-    pluginVitest,
-    pluginNoOnlyTests,
-  ] = await Promise.all([
+  const [pluginVitest, pluginNoOnlyTests] = await Promise.all([
     interopDefault(import('eslint-plugin-vitest')),
     // @ts-expect-error missing types
     interopDefault(import('eslint-plugin-no-only-tests')),

@@ -30,19 +30,18 @@ export type Awaitable<T> = T | Promise<T>
 export type Rules = WrapRuleConfig<
   MergeIntersection<
     RenamePrefix<TypeScriptRules, '@typescript-eslint/', 'ts/'> &
-    RenamePrefix<VitestRules, 'vitest/', 'test/'> &
-    RenamePrefix<YmlRules, 'yml/', 'yaml/'> &
-    RenamePrefix<NRules, 'n/', 'node/'> &
-    Prefix<AntfuRules, 'antfu/'> &
-    ImportRules &
-    EslintRules &
-    JsoncRules &
-    VueRules &
-    UnicornRules &
-    EslintCommentsRules &
-    {
-      'test/no-only-tests': RuleConfig<[]>
-    }
+      RenamePrefix<VitestRules, 'vitest/', 'test/'> &
+      RenamePrefix<YmlRules, 'yml/', 'yaml/'> &
+      RenamePrefix<NRules, 'n/', 'node/'> &
+      Prefix<AntfuRules, 'antfu/'> &
+      ImportRules &
+      EslintRules &
+      JsoncRules &
+      VueRules &
+      UnicornRules &
+      EslintCommentsRules & {
+        'test/no-only-tests': RuleConfig<[]>
+      }
   >
 >
 
@@ -81,7 +80,7 @@ export type OptionsVue = {
 } & OptionsOverrides
 
 export type OptionsTypescript =
-  (OptionsTypeScriptWithTypes & OptionsOverrides)
+  | (OptionsTypeScriptWithTypes & OptionsOverrides)
   | (OptionsTypeScriptParserOptions & OptionsOverrides)
 
 export type OptionsComponentExts = {
@@ -118,7 +117,6 @@ export type OptionsTypeScriptWithTypes = {
 export type OptionsHasTypeScript = {
   typescript?: boolean
 }
-
 
 export type OptionsOverrides = {
   overrides?: FlatConfigItem['rules']
