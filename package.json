@@ -1,7 +1,7 @@
 {
   "name": "@jakubserwin/eslint-config-vue",
   "type": "module",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "private": false,
   "description": "",
   "author": "Jakub Serwin",
@@ -53,6 +53,7 @@
     "eslint-plugin-jsonc": "^2.13.0",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-no-only-tests": "^3.1.0",
+    "eslint-plugin-tailwindcss": "^3.15.1",
     "eslint-plugin-unicorn": "^51.0.1",
     "eslint-plugin-unused-imports": "^3.1.0",
     "eslint-plugin-vitest": "^0.3.26",
