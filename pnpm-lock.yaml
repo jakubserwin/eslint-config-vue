@@ -121,9 +121,6 @@ devDependencies:
   eslint-flat-config-viewer:
     specifier: ^0.1.11
     version: 0.1.11(eslint-ts-patch@8.57.0-0)(typescript@5.4.2)
-  eslint-plugin-format:
-    specifier: ^0.1.0
-    version: 0.1.0(eslint-ts-patch@8.57.0-0)
   eslint-ts-patch:
     specifier: ^8.57.0-0
     version: 8.57.0-0
@@ -139,9 +136,6 @@ devDependencies:
   fs-extra:
     specifier: ^11.2.0
     version: 11.2.0
-  simple-git-hooks:
-    specifier: ^2.10.0
-    version: 2.10.0
   tsup:
     specifier: ^8.0.2
     version: 8.0.2(typescript@5.4.2)
@@ -258,18 +252,6 @@ packages:
     dev: false
     bundledDependencies:
       - is-unicode-supported
-
-  /@dprint/formatter@0.2.1:
-    resolution: {integrity: sha512-GCzgRt2o4mhZLy8L47k2A+q9EMG/jWhzZebE29EqKsxmjDrSfv2VisEj/Q+39OOf04jTkEfB/TRO+IZSyxHdYg==}
-    dev: true
-
-  /@dprint/markdown@0.16.4:
-    resolution: {integrity: sha512-WjsC4yLybR5/76+d/2s36nOBGjETe+jJR//ddFHohDXKdis+FTUv7dJ00kmd6g0AKQwDITayM1Nid10gFNG0Yg==}
-    dev: true
-
-  /@dprint/toml@0.5.4:
-    resolution: {integrity: sha512-d+5GwwzztZD0QixmOBhaO6nWVLsAeYsJ1HJYNxDoDRbASFCpza9BBVshG5ctBRXCkkIHhD9BO1SnbOoRQltUQw==}
-    dev: true
 
   /@esbuild/aix-ppc64@0.19.12:
     resolution: {integrity: sha512-bmoCYyWdEL3wDQIVbcyzRyeKLgk2WtWLTWz1ZIAZF/EGbNOwSA6ew3PftJ1PqMiOOGu0OyFMzG53L0zqIpPeNA==}
@@ -1623,15 +1605,6 @@ packages:
       - utf-8-validate
     dev: true
 
-  /eslint-formatting-reporter@0.0.0(eslint-ts-patch@8.57.0-0):
-    resolution: {integrity: sha512-k9RdyTqxqN/wNYVaTk/ds5B5rA8lgoAmvceYN7bcZMBwU7TuXx5ntewJv81eF3pIL/CiJE+pJZm36llG8yhyyw==}
-    peerDependencies:
-      eslint: '>=8.40.0'
-    dependencies:
-      eslint: /eslint-ts-patch@8.57.0-0
-      prettier-linter-helpers: 1.0.0
-    dev: true
-
   /eslint-import-resolver-node@0.3.9:
     resolution: {integrity: sha512-WFj2isz22JahUv+B788TlO3N6zL3nNJGU8CcZbPZvVEkBPaJdCV4vy5wyghty5ROFbCRnm132v8BScu5/1BQ8g==}
     dependencies:
@@ -1679,10 +1652,6 @@ packages:
       - supports-color
     dev: false
 
-  /eslint-parser-plain@0.1.0:
-    resolution: {integrity: sha512-oOeA6FWU0UJT/Rxc3XF5Cq0nbIZbylm7j8+plqq0CZoE6m4u32OXJrR+9iy4srGMmF6v6pmgvP1zPxSRIGh3sg==}
-    dev: true
-
   /eslint-plugin-antfu@2.1.2(eslint-ts-patch@8.57.0-0):
     resolution: {integrity: sha512-s7ZTOM3uq0iqpp6gF0UEotnvup7f2PHBUftCytLZX0+6C9j9KadKZQh6bVVngAyFgsmeD9+gcBopOYLClb2oDg==}
     peerDependencies:
@@ -1713,21 +1682,6 @@ packages:
       eslint: /eslint-ts-patch@8.57.0-0
       ignore: 5.3.1
     dev: false
-
-  /eslint-plugin-format@0.1.0(eslint-ts-patch@8.57.0-0):
-    resolution: {integrity: sha512-IgOu+GEH+PdKnpuPrFzY8q8QgnzAUijDZsNLhpp5jx0Lbu9u968/STcmEZGnIMVBw3zeTNN/FsU6d2Rdgcy6Aw==}
-    peerDependencies:
-      eslint: ^8.40.0
-    dependencies:
-      '@dprint/formatter': 0.2.1
-      '@dprint/markdown': 0.16.4
-      '@dprint/toml': 0.5.4
-      eslint: /eslint-ts-patch@8.57.0-0
-      eslint-formatting-reporter: 0.0.0(eslint-ts-patch@8.57.0-0)
-      eslint-parser-plain: 0.1.0
-      prettier: 3.2.5
-      synckit: 0.8.8
-    dev: true
 
   /eslint-plugin-i@2.29.1(@typescript-eslint/parser@7.2.0)(eslint-ts-patch@8.57.0-0):
     resolution: {integrity: sha512-ORizX37MelIWLbMyqI7hi8VJMf7A0CskMmYkB+lkCX3aF4pkGV7kwx5bSEb4qx7Yce2rAf9s34HqDRPjGRZPNQ==}
@@ -3169,12 +3123,6 @@ packages:
   /signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
-
-  /simple-git-hooks@2.10.0:
-    resolution: {integrity: sha512-TtCytVYfV77pILCkzVxpOSgYKHQyaO7fBI/iwG5bLGb0dIo/v/K1Y1IZ5DN40RQu6WNNJiN0gkuRvSYjxOhFog==}
-    hasBin: true
-    requiresBuild: true
-    dev: true
 
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}

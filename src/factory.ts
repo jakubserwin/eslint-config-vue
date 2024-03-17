@@ -20,7 +20,6 @@ import {
   yaml,
 } from './configs'
 import { combine, interopDefault } from './utils'
-import { formatters } from './configs/formatters'
 
 const flatConfigProps: (keyof FlatConfigItem)[] = [
   'name',
@@ -136,12 +135,6 @@ export async function antfu(
     configs.push(yaml({
       overrides: getOverrides(options, 'yaml'),
     }))
-  }
-
-  if (options.formatters) {
-    configs.push(formatters(
-      options.formatters,
-    ))
   }
 
   // User can optionally pass a flat config item to the first argument

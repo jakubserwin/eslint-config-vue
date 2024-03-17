@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { GLOB_SRC, GLOB_TS, GLOB_TSX } from '../globs'
+import { GLOB_SRC, GLOB_TS } from '../globs'
 import type { FlatConfigItem, OptionsComponentExts, OptionsFiles, OptionsOverrides, OptionsTypeScriptParserOptions, OptionsTypeScriptWithTypes } from '../types'
 import { pluginAntfu } from '../plugins'
 import { interopDefault, renameRules, toArray } from '../utils'
@@ -18,7 +18,7 @@ export async function typescript(
     ...componentExts.map(ext => `**/*.${ext}`),
   ]
 
-  const filesTypeAware = options.filesTypeAware ?? [GLOB_TS, GLOB_TSX]
+  const filesTypeAware = options.filesTypeAware ?? [GLOB_TS]
   const tsconfigPath = options?.tsconfigPath
     ? toArray(options.tsconfigPath)
     : undefined
