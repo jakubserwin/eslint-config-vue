@@ -8,17 +8,20 @@ import {
   javascript,
   jsonc,
   node,
-  perfectionist,
   sortPackageJson,
   sortTsconfig,
   test,
   typescript,
   unicorn,
-  // unocss,
   vue,
   yaml,
 } from './configs'
 import { combine, interopDefault } from './utils'
+
+// TODO
+// - tailiwnd css
+// - prettier
+// - z
 
 const flatConfigProps: Array<keyof FlatConfigItem> = [
   'name',
@@ -42,7 +45,7 @@ const flatConfigProps: Array<keyof FlatConfigItem> = [
  * @returns {Promise<UserConfigItem[]>}
  *  The merged ESLint configurations.
  */
-export async function antfu(
+export async function jsConfig(
   options: OptionsConfig & FlatConfigItem = {},
   ...userConfigs: Array<Awaitable<UserConfigItem | UserConfigItem[]>>
 ): Promise<UserConfigItem[]> {
@@ -50,7 +53,6 @@ export async function antfu(
   const {
     gitignore: enableGitignore = true,
     isInEditor = !!((process.env.VSCODE_PID || process.env.VSCODE_CWD || process.env.JETBRAINS_IDE || process.env.VIM) && !process.env.CI),
-    // unocss: enableUnoCSS = false,
   } = options
 
   const configs: Array<Awaitable<FlatConfigItem[]>> = []
@@ -83,7 +85,6 @@ export async function antfu(
       ...resolveSubOptions(options, 'typescript'),
       overrides: getOverrides(options, 'typescript'),
     }),
-    perfectionist(),
   )
 
   if (options.test ?? true) {
@@ -92,14 +93,6 @@ export async function antfu(
       overrides: getOverrides(options, 'test'),
     }))
   }
-
-  // if (enableUnoCSS) {
-  //   configs.push(unocss({
-  //     ...resolveSubOptions(options, 'unocss'),
-  //     overrides: getOverrides(options, 'unocss'),
-  //   }))
-  // }
-
 
   if (options.jsonc ?? true) {
     configs.push(

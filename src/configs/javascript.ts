@@ -119,6 +119,16 @@ export async function javascript(
           'TSEnumDeclaration[const=true]',
           'TSExportAssignment',
         ],
+        'object-curly-newline': ['error', {
+          ImportDeclaration: {
+            minProperties: 5,
+          }
+        }],
+        'max-len': ['error', {
+          code: 130,
+          ignoreUrls: true,
+          ignoreComments: true,
+        }],
         'no-self-assign': ['error', { props: true }],
         'no-self-compare': 'error',
         'no-sequences': 'error',
@@ -127,7 +137,6 @@ export async function javascript(
         'no-template-curly-in-string': 'error',
         'no-this-before-super': 'error',
         'no-throw-literal': 'error',
-        'no-undef': 'error',
         'no-undef-init': 'error',
         'no-unexpected-multiline': 'error',
         'no-unmodified-loop-condition': 'error',

@@ -128,19 +128,6 @@ export type OptionsIsInEditor = {
   isInEditor?: boolean
 }
 
-export type OptionsUnoCSS = {
-  /**
-   * Enable attributify support.
-   * @default false
-   */
-  attributify?: boolean
-  /**
-   * Enable strict mode by throwing errors about blocklisted classes.
-   * @default false
-   */
-  strict?: boolean
-} & OptionsOverrides
-
 export type OptionsConfig = {
   /**
    * Enable gitignore support.
@@ -193,16 +180,6 @@ export type OptionsConfig = {
    * @default true
    */
   yaml?: boolean | OptionsOverrides
-
-  /**
-   * Enable unocss rules.
-   *
-   * Requires installing:
-   * - `@unocss/eslint-plugin`
-   *
-   * @default false
-   */
-  unocss?: boolean | OptionsUnoCSS
 
   /**
    * Control to disable some rules in editors.

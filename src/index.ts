@@ -1,8 +1,8 @@
-import { antfu } from './factory'
+import { jsConfig } from './factory'
 
 export * from './configs'
 export * from './factory'
 export * from './globs'
 export * from './types'
 
-export default antfu
+export default jsConfig

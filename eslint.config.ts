@@ -1,10 +1,3 @@
-import antfu from './src'
+import jsConfig from './src'
 
-export default antfu(
-  {
-    files: ['src/**/*.ts'],
-    rules: {
-      'perfectionist/sort-objects': 'error',
-    },
-  },
-)
+export default jsConfig()
