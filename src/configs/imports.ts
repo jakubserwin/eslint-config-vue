@@ -1,6 +1,6 @@
-import type { FlatConfigItem } from '../types'
-import { pluginAntfu, pluginImport } from '../plugins'
 import { GLOB_SRC_EXT } from '../globs'
+import { pluginAntfu, pluginImport } from '../plugins'
+import type { FlatConfigItem } from '../types'
 
 export async function imports(): Promise<FlatConfigItem[]> {
   return [

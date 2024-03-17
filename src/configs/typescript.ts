@@ -1,11 +1,17 @@
 import process from 'node:process'
 import { GLOB_SRC, GLOB_TS } from '../globs'
-import type { FlatConfigItem, OptionsComponentExts, OptionsFiles, OptionsOverrides, OptionsTypeScriptParserOptions, OptionsTypeScriptWithTypes } from '../types'
 import { pluginAntfu } from '../plugins'
+import type {
+ FlatConfigItem, OptionsComponentExts, OptionsFiles, OptionsOverrides, OptionsTypeScriptParserOptions, OptionsTypeScriptWithTypes 
+} from '../types'
 import { interopDefault, renameRules, toArray } from '../utils'
 
 export async function typescript(
-  options: OptionsFiles & OptionsComponentExts & OptionsOverrides & OptionsTypeScriptWithTypes & OptionsTypeScriptParserOptions = {},
+  options: OptionsFiles &
+   OptionsComponentExts &
+    OptionsOverrides &
+    OptionsTypeScriptWithTypes & 
+    OptionsTypeScriptParserOptions = {},
 ): Promise<FlatConfigItem[]> {
   const {
     componentExts = [],
