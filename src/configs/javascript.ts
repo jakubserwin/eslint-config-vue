@@ -41,7 +41,7 @@ export async function javascript(
       },
       rules: {
         'accessor-pairs': ['error', { enforceForClassMembers: true, setWithoutGet: true }],
-
+        'array-bracket-spacing': ['error', 'never'],
         'array-callback-return': 'error',
         'block-scoped-var': 'error',
         'constructor-super': 'error',
@@ -187,6 +187,7 @@ export async function javascript(
         'prefer-spread': 'error',
         'prefer-template': 'error',
         'quotes': ['error', 'single'],
+
         'semi': ['error', 'never'],
         'sort-imports': [
           'error',
@@ -198,11 +199,10 @@ export async function javascript(
             memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
           },
         ],
-
         'symbol-description': 'error',
+
         'unicode-bom': ['error', 'never'],
         'unused-imports/no-unused-imports': isInEditor ? 'off' : 'error',
-
         'unused-imports/no-unused-vars': [
           'error',
           { args: 'after-used', argsIgnorePattern: '^_', vars: 'all', varsIgnorePattern: '^_' },

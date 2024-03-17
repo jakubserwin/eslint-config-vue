@@ -1,6 +1,5 @@
 import process from 'node:process'
 import fs from 'node:fs'
-import { isPackageExists } from 'local-pkg'
 import type { Awaitable, FlatConfigItem, OptionsConfig, UserConfigItem } from './types'
 import {
   comments,
@@ -21,7 +20,7 @@ import {
 } from './configs'
 import { combine, interopDefault } from './utils'
 
-const flatConfigProps: (keyof FlatConfigItem)[] = [
+const flatConfigProps: Array<keyof FlatConfigItem> = [
   'name',
   'files',
   'ignores',
@@ -31,11 +30,6 @@ const flatConfigProps: (keyof FlatConfigItem)[] = [
   'plugins',
   'rules',
   'settings',
-]
-
-const VuePackages = [
-  'vue',
-  'nuxt',
 ]
 
 /**
@@ -50,24 +44,21 @@ const VuePackages = [
  */
 export async function antfu(
   options: OptionsConfig & FlatConfigItem = {},
-  ...userConfigs: Awaitable<UserConfigItem | UserConfigItem[]>[]
+  ...userConfigs: Array<Awaitable<UserConfigItem | UserConfigItem[]>>
 ): Promise<UserConfigItem[]> {
+
   const {
-    componentExts = [],
     gitignore: enableGitignore = true,
     isInEditor = !!((process.env.VSCODE_PID || process.env.VSCODE_CWD || process.env.JETBRAINS_IDE || process.env.VIM) && !process.env.CI),
-    typescript: enableTypeScript = isPackageExists('typescript'),
     // unocss: enableUnoCSS = false,
-    vue: enableVue = VuePackages.some(i => isPackageExists(i)),
   } = options
 
-  const configs: Awaitable<FlatConfigItem[]>[] = []
+  const configs: Array<Awaitable<FlatConfigItem[]>> = []
 
   if (enableGitignore) {
     if (typeof enableGitignore !== 'boolean') {
       configs.push(interopDefault(import('eslint-config-flat-gitignore')).then(r => [r(enableGitignore)]))
-    }
-    else {
+    } else {
       if (fs.existsSync('.gitignore'))
         configs.push(interopDefault(import('eslint-config-flat-gitignore')).then(r => [r()]))
     }
@@ -84,32 +75,21 @@ export async function antfu(
     node(),
     imports(),
     unicorn(),
+    vue({
+      ...resolveSubOptions(options, 'vue'),
+      overrides: getOverrides(options, 'vue'),
+    }),
+    typescript({
+      ...resolveSubOptions(options, 'typescript'),
+      overrides: getOverrides(options, 'typescript'),
+    }),
     perfectionist(),
   )
-
-  if (enableVue)
-    componentExts.push('vue')
-
-  if (enableTypeScript) {
-    configs.push(typescript({
-      ...resolveSubOptions(options, 'typescript'),
-      componentExts,
-      overrides: getOverrides(options, 'typescript'),
-    }))
-  }
 
   if (options.test ?? true) {
     configs.push(test({
       isInEditor,
       overrides: getOverrides(options, 'test'),
-    }))
-  }
-
-  if (enableVue) {
-    configs.push(vue({
-      ...resolveSubOptions(options, 'vue'),
-      overrides: getOverrides(options, 'vue'),
-      typescript: !!enableTypeScript,
     }))
   }
 

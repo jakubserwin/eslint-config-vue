@@ -40,7 +40,6 @@ export type Rules = WrapRuleConfig<
     VueRules &
     UnicornRules &
     EslintCommentsRules &
-    // TODO: TOML rules
     {
       'test/no-only-tests': RuleConfig<[]>
     }
@@ -64,14 +63,14 @@ export type FlatConfigItem = Omit<FlatESLintConfigItem<Rules, false>, 'plugins'>
 
 export type UserConfigItem = FlatConfigItem | Linter.FlatConfig
 
-export interface OptionsFiles {
+export type OptionsFiles = {
   /**
    * Override the `files` option to provide custom globs.
    */
   files?: string[]
 }
 
-export interface OptionsVue extends OptionsOverrides {
+export type OptionsVue = {
   /**
    * Create virtual files for Vue SFC blocks to enable linting.
    *
@@ -79,20 +78,13 @@ export interface OptionsVue extends OptionsOverrides {
    * @default true
    */
   sfcBlocks?: boolean | VueBlocksOptions
-
-  /**
-   * Vue version. Apply different rules set from `eslint-plugin-vue`.
-   *
-   * @default 3
-   */
-  vueVersion?: 2 | 3
-}
+} & OptionsOverrides
 
 export type OptionsTypescript =
   (OptionsTypeScriptWithTypes & OptionsOverrides)
   | (OptionsTypeScriptParserOptions & OptionsOverrides)
 
-export interface OptionsComponentExts {
+export type OptionsComponentExts = {
   /**
    * Additional extensions for components.
    *
@@ -102,7 +94,7 @@ export interface OptionsComponentExts {
   componentExts?: string[]
 }
 
-export interface OptionsTypeScriptParserOptions {
+export type OptionsTypeScriptParserOptions = {
   /**
    * Additional parser options for TypeScript.
    */
@@ -115,7 +107,7 @@ export interface OptionsTypeScriptParserOptions {
   filesTypeAware?: string[]
 }
 
-export interface OptionsTypeScriptWithTypes {
+export type OptionsTypeScriptWithTypes = {
   /**
    * When this options is provided, type aware rules will be enabled.
    * @see https://typescript-eslint.io/linting/typed-linting/
@@ -123,20 +115,20 @@ export interface OptionsTypeScriptWithTypes {
   tsconfigPath?: string | string[]
 }
 
-export interface OptionsHasTypeScript {
+export type OptionsHasTypeScript = {
   typescript?: boolean
 }
 
 
-export interface OptionsOverrides {
+export type OptionsOverrides = {
   overrides?: FlatConfigItem['rules']
 }
 
-export interface OptionsIsInEditor {
+export type OptionsIsInEditor = {
   isInEditor?: boolean
 }
 
-export interface OptionsUnoCSS extends OptionsOverrides {
+export type OptionsUnoCSS = {
   /**
    * Enable attributify support.
    * @default false
@@ -147,9 +139,9 @@ export interface OptionsUnoCSS extends OptionsOverrides {
    * @default false
    */
   strict?: boolean
-}
+} & OptionsOverrides
 
-export interface OptionsConfig extends OptionsComponentExts {
+export type OptionsConfig = {
   /**
    * Enable gitignore support.
    *
@@ -230,4 +222,4 @@ export interface OptionsConfig extends OptionsComponentExts {
     vue?: FlatConfigItem['rules']
     yaml?: FlatConfigItem['rules']
   }
-}
+} & OptionsComponentExts
