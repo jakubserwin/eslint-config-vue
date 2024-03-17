@@ -10,19 +10,19 @@ export default jsConfig(
     extends: ['plugin:tailwindcss/recommended'],
     rules: {
       'unused-imports/no-unused-imports': 'error',
-      
+
       'tailwindcss/no-custom-classname': 'off',
-      
+
       'prefer-arrow-functions/prefer-arrow-functions': [
         'error',
         {
-          'allowNamedFunctions': false,
-          'classPropertiesAllowed': false,
-          'disallowPrototype': false,
-          'returnStyle': 'unchanged',
-          'singleReturnOnly': false
-        }
-      ]
+          allowNamedFunctions: false,
+          classPropertiesAllowed: false,
+          disallowPrototype: false,
+          returnStyle: 'unchanged',
+          singleReturnOnly: false,
+        },
+      ],
     },
-  })
+  }),
 )

@@ -1,7 +1,7 @@
 {
   "name": "@jakubserwin/eslint-config-vue",
   "type": "module",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "private": false,
   "description": "",
   "author": "Jakub Serwin",
