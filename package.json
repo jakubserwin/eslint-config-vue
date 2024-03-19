@@ -1,7 +1,7 @@
 {
   "name": "@jakubserwin/eslint-config-vue",
   "type": "module",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "private": false,
   "description": "",
   "author": "Jakub Serwin",
@@ -23,16 +23,13 @@
   "types": "./dist/index.d.ts",
   "bin": "./bin/index.js",
   "files": [
-    "bin",
     "dist"
   ],
   "scripts": {
     "build": "tsup --format esm,cjs --clean --dts",
-    "stub": "tsup --format esm",
     "dev": "tsup --format esm,cjs --watch & eslint-flat-config-viewer",
     "watch": "tsup --format esm,cjs --watch",
     "lint": "eslint .",
-    "prepack": "nr build",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
